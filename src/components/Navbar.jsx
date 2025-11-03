@@ -181,10 +181,16 @@ export default function Navbar() {
                   }`}>
                     <div className="py-2">
                       <button 
-                        onClick={() => scrollToSection('/About/AboutUs')}
+                        onClick={() => scrollToSection('about')}
                         className="w-full text-left px-4 py-3 hover:bg-blue-50 hover:text-blue-800 transition-all duration-200 hover:pl-6"
                       >
                         About Us
+                      </button>
+                      <button 
+                        onClick={() => scrollToSection('mission-vision')}
+                        className="w-full text-left px-4 py-3 hover:bg-blue-50 hover:text-blue-800 transition-all duration-200 hover:pl-6"
+                      >
+                        🎯 Mission & Vision
                       </button>
                       <button 
                         onClick={() => scrollToSection('principal')}
@@ -330,13 +336,14 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Mobile Menu Content */}
+
+                      {/* Mobile Menu Content */}
           <div className="flex-1 overflow-y-auto py-6 px-6">
             <div className="space-y-4">
               
               <button 
                 onClick={() => scrollToSection('home')}
-                              className="flex items-center gap-3 w-full text-left py-3 px-4 text-gray-700 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-all duration-300"
+                className="flex items-center gap-3 w-full text-left py-3 px-4 text-gray-700 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-all duration-300"
               >
                 <span className="text-xl">🏠</span>
                 <span className="font-medium">Home</span>
@@ -358,15 +365,22 @@ export default function Navbar() {
                   />
                 </button>
                 <div className={`overflow-hidden transition-all duration-300 ${
-                  aboutOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+                  aboutOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
                 }`}>
                   <div className="bg-gray-50 px-4 py-2 space-y-2">
                     <button 
-                      onClick={() => scrollToSection('mission')}
+                      onClick={() => scrollToSection('about')}
+                      className="flex items-center gap-3 w-full text-left py-2 text-sm text-gray-600 hover:text-blue-800 hover:bg-blue-100 rounded px-2 transition-colors duration-300"
+                    >
+                      <span>ℹ️</span>
+                      <span>About Us</span>
+                    </button>
+                    <button 
+                      onClick={() => scrollToSection('mission-vision')}
                       className="flex items-center gap-3 w-full text-left py-2 text-sm text-gray-600 hover:text-blue-800 hover:bg-blue-100 rounded px-2 transition-colors duration-300"
                     >
                       <span>🎯</span>
-                      <span>About Us</span>
+                      <span>Mission & Vision</span>
                     </button>
                     <button 
                       onClick={() => scrollToSection('principal')}
@@ -402,7 +416,7 @@ export default function Navbar() {
                   />
                 </button>
                 <div className={`overflow-hidden transition-all duration-300 ${
-                  academicsOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+                  academicsOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
                 }`}>
                   <div className="bg-gray-50 px-4 py-2 space-y-2">
                     <button 

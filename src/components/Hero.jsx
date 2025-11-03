@@ -161,7 +161,7 @@ export default function Hero() {
         transition={{ delay: 1.5, duration: 1 }}
         whileHover={{ scale: 1.05, y: -5 }}
       >
-        <div className="flex items-center gap-2 md:gap-3">
+        <div className="flex items-center top-40 gap-2 md:gap-3">
           <FaAward className="text-yellow-400 text-xl md:text-2xl" />
           <div>
             <p className="text-xs md:text-sm font-semibold">Future Starts </p>

@@ -1,21 +1,7 @@
 import { motion } from "framer-motion";
-import { FaBullseye, FaEye, FaHeart, FaStar, FaGraduationCap, FaUsers, FaLightbulb, FaHandsHelping, FaArrowLeft, FaCheckCircle } from "react-icons/fa";
+import { FaBullseye, FaEye, FaHeart, FaStar, FaGraduationCap, FaUsers, FaLightbulb, FaHandsHelping, FaCheckCircle } from "react-icons/fa";
 
-export default function MissionVisionPage({ onGoHome }) {
-  // Handle navigation - you can customize this based on your routing setup
-  const handleGoHome = () => {
-    if (onGoHome) {
-      onGoHome(); // Use prop function if provided
-    } else {
-      // Fallback navigation methods
-      if (window.history.length > 1) {
-        window.history.back(); // Go back if there's history
-      } else {
-        window.location.href = '/'; // Navigate to home
-      }
-    }
-  };
-
+export default function MissionVisionPage() {
   const detailedValues = [
     {
       icon: <FaGraduationCap className="text-4xl text-blue-600" />,
@@ -110,51 +96,17 @@ export default function MissionVisionPage({ onGoHome }) {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
-      {/* Navigation Bar */}
-      <nav className="bg-white shadow-md sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <motion.button
-              onClick={handleGoHome}
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
-              whileHover={{ x: -5 }}
-              transition={{ duration: 0.2 }}
-            >
-              <FaArrowLeft />
-              Back to Home
-            </motion.button>
-            
-            <div className="flex items-center gap-3">
-              <div className="text-2xl">🎓</div>
-              <div>
-                <h1 className="text-xl font-bold text-blue-800">Birchwood Academy</h1>
-                <p className="text-xs text-gray-600">Excellence in Education</p>
-              </div>
-            </div>
-
-            {/* Home Navigation Button */}
-            <motion.button
-              onClick={handleGoHome}
-              className="bg-blue-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-700 transition-colors duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Home
-            </motion.button>
-          </div>
-        </div>
-      </nav>
-
+    <section id="mission-vision" className="bg-gradient-to-br from-blue-50 via-white to-green-50">
       {/* Page Title Section */}
-      <section className="py-12 md:py-16 relative overflow-hidden">
+      <div className="py-12 md:py-16 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-green-600/5"></div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <motion.h1
             className="text-3xl md:text-5xl font-bold text-gray-800 mb-4"
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
           >
             Our Mission & <span className="text-blue-600">Vision</span>
           </motion.h1>
@@ -162,16 +114,17 @@ export default function MissionVisionPage({ onGoHome }) {
           <motion.p
             className="text-lg text-gray-600 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
           >
             The foundation of excellence that drives everything we do at Birchwood Academy
           </motion.p>
         </div>
-      </section>
+      </div>
 
       {/* Detailed Mission Section */}
-      <section className="py-16 bg-white">
+      <div className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -247,10 +200,10 @@ export default function MissionVisionPage({ onGoHome }) {
             </motion.div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Detailed Vision Section */}
-      <section className="py-16 bg-gradient-to-br from-green-50 to-blue-50">
+      <div className="py-16 bg-gradient-to-br from-green-50 to-blue-50">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -327,10 +280,10 @@ export default function MissionVisionPage({ onGoHome }) {
             </motion.div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Detailed Core Values */}
-      <section className="py-20 bg-white">
+      <div className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <motion.div
             className="text-center mb-16"
@@ -340,8 +293,8 @@ export default function MissionVisionPage({ onGoHome }) {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-              Our Core Values</h2>
-                          
+              Our Core Values
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               The fundamental principles that guide our educational approach and shape our school culture
             </p>
@@ -372,7 +325,7 @@ export default function MissionVisionPage({ onGoHome }) {
                 
                 <div className="relative z-10">
                   <motion.div
-                    className="mb-6 group-hover:scale-110 transition-transform duration-300"
+                                      className="mb-6 group-hover:scale-110 transition-transform duration-300"
                     whileHover={{ rotate: 5 }}
                   >
                     {value.icon}
@@ -408,10 +361,10 @@ export default function MissionVisionPage({ onGoHome }) {
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Educational Philosophy Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-green-600 text-white relative overflow-hidden">
+      <div className="py-16 bg-gradient-to-r from-blue-600 to-green-600 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
@@ -480,10 +433,10 @@ export default function MissionVisionPage({ onGoHome }) {
             </motion.div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Statistics Section */}
-      <section className="py-16 bg-gray-50">
+      <div className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <motion.div
             className="text-center mb-12"
@@ -523,10 +476,10 @@ export default function MissionVisionPage({ onGoHome }) {
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Call to Action */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-green-600 text-white">
+      <div className="py-16 bg-gradient-to-r from-blue-600 to-green-600 text-white">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -544,20 +497,30 @@ export default function MissionVisionPage({ onGoHome }) {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button
-                onClick={handleGoHome}
                 className="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center gap-2"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  const contactSection = document.getElementById('contact');
+                  if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
               >
                 <span>📅</span>
                 Schedule a Campus Visit
               </motion.button>
               
               <motion.button
-                onClick={handleGoHome}
                 className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition-all duration-300 flex items-center justify-center gap-2"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  const admissionsSection = document.getElementById('admissions');
+                  if (admissionsSection) {
+                    admissionsSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
               >
                 <span>📄</span>
                 Download Prospectus
@@ -565,7 +528,7 @@ export default function MissionVisionPage({ onGoHome }) {
             </div>
           </motion.div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }

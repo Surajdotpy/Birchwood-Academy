@@ -358,24 +358,7 @@ export default function Footer() {
               © {new Date().getFullYear()} Birchwood Academy. All rights reserved.
             </motion.p>
             
-            <motion.div 
-              className="flex items-center gap-4 text-sm text-gray-400"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <a href="/privacy" className="hover:text-blue-400 transition-colors">Privacy Policy</a>
-              <span>•</span>
-              <a href="/terms" className="hover:text-blue-400 transition-colors">Terms of Service</a>
-              <span>•</span>
-              <motion.span 
-                className="flex items-center gap-1"
-                whileHover={{ scale: 1.05 }}
-              >
-                Designed with <Heart size={14} className="text-red-400 animate-pulse" /> by 
-                <span className="text-blue-400 font-semibold ml-1">Suraj</span>
-              </motion.span>
-            </motion.div>
+        
           </div>
         </div>
       </motion.div>
