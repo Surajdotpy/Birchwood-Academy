@@ -12,10 +12,10 @@ export default function Footer() {
   ];
 
   const achievements = [
-    { number: "25+", label: "Years of Excellence", icon: Award },
-    { number: "2000+", label: "Happy Students", icon: Users },
-    { number: "98%", label: "Success Rate", icon: Star },
-    { number: "150+", label: "Expert Faculty", icon: GraduationCap },
+    { number: "10+", label: "Years of Teaching Experience", icon: Award },
+    { number: "200+", label: "Happy Students", icon: Users },
+    { number: "99%", label: "Success Rate", icon: Star },
+    { number: "20+", label: "Expert Faculty", icon: GraduationCap },
   ];
 
   return (

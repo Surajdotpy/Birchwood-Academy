@@ -455,10 +455,10 @@ export default function MissionVisionPage() {
 
           <div className="grid md:grid-cols-4 gap-8">
             {[
-              { number: "25+", label: "Years of Excellence", icon: "🏆" },
-              { number: "2000+", label: "Successful Alumni", icon: "🎓" },
-              { number: "150+", label: "Dedicated Faculty", icon: "👨‍🏫" },
-              { number: "98%", label: "Success Rate", icon: "📈" }
+              { number: "10+", label: "Years of Teaching Experience", icon: "🏆" },
+              { number: "200+", label: "Successful Students", icon: "🎓" },
+              { number: "20+", label: "Dedicated Faculty", icon: "👨‍🏫" },
+              { number: "99%", label: "Success Rate", icon: "📈" }
             ].map((stat, index) => (
               <motion.div
                 key={index}
