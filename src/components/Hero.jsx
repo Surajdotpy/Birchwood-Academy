@@ -6,12 +6,27 @@ import { HiArrowDown } from "react-icons/hi";
 export default function Hero() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [navHeight, setNavHeight] = useState(120); // Default navbar height
+  const [navHeight, setNavHeight] = useState(120);
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const { scrollY } = useScroll();
   
-  // Parallax effects
-  const y = useTransform(scrollY, [0, 500], [0, 150]);
+  // Parallax effects - reduced for mobile
+  const y = useTransform(scrollY, [0, 500], [0, windowSize.width < 768 ? 75 : 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+
+  // Track window size for responsive behavior
+  useEffect(() => {
+    const updateWindowSize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    updateWindowSize();
+    window.addEventListener('resize', updateWindowSize);
+    return () => window.removeEventListener('resize', updateWindowSize);
+  }, []);
 
   // Calculate navbar height dynamically
   useEffect(() => {
@@ -22,10 +37,8 @@ export default function Hero() {
       }
     };
 
-    // Initial calculation
     updateNavHeight();
 
-    // Update on scroll and resize
     const handleScroll = () => {
       updateNavHeight();
     };
@@ -75,7 +88,7 @@ export default function Hero() {
 
   // Scroll to next section
   const scrollToNext = () => {
-    const nextSection = document.getElementById('about');
+    const nextSection = document.getElementById('mission-vision');
     if (nextSection) {
       nextSection.scrollIntoView({ behavior: 'smooth' });
     }
@@ -88,10 +101,10 @@ export default function Hero() {
       style={{ 
         height: `calc(100vh - ${navHeight}px)`,
         marginTop: `${navHeight}px`,
-        minHeight: '600px' // Ensure minimum height on small screens
+        minHeight: windowSize.width < 768 ? '500px' : '600px'
       }}
     >
-      {/* 🎬 Background Video with Parallax */}
+      {/* Background Video with Parallax */}
       <motion.div 
         className="absolute inset-0 w-full h-full"
         style={{ y }}
@@ -105,7 +118,6 @@ export default function Hero() {
           onLoadedData={() => setIsVideoLoaded(true)}
         >
           <source src="/videos/school-campus.mp4" type="video/mp4" />
-          {/* Fallback image */}
         </video>
         
         {/* Fallback Background Image */}
@@ -117,18 +129,18 @@ export default function Hero() {
         />
       </motion.div>
 
-      {/* 🌟 Animated Particles */}
+      {/* Animated Particles - Responsive count */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(windowSize.width < 768 ? 10 : 20)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 bg-white rounded-full opacity-20"
+            className="absolute w-1 h-1 sm:w-2 sm:h-2 bg-white rounded-full opacity-20"
             initial={{
-              x: typeof window !== 'undefined' ? Math.random() * window.innerWidth : Math.random() * 1200,
-              y: typeof window !== 'undefined' ? Math.random() * window.innerHeight : Math.random() * 800,
+              x: Math.random() * (windowSize.width || 1200),
+              y: Math.random() * (windowSize.height || 800),
             }}
             animate={{
-              y: [null, -100, (typeof window !== 'undefined' ? window.innerHeight : 800) + 100],
+              y: [null, -100, (windowSize.height || 800) + 100],
               opacity: [0, 1, 0],
             }}
             transition={{
@@ -140,7 +152,7 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* 🔹 Dynamic Gradient Overlay */}
+      {/* Dynamic Gradient Overlay */}
       <motion.div 
         className="absolute inset-0 bg-gradient-to-br from-blue-900/70 via-purple-900/50 to-green-900/60"
         animate={{
@@ -153,58 +165,58 @@ export default function Hero() {
         transition={{ duration: 8, repeat: Infinity, repeatType: "reverse" }}
       />
 
-      {/* 🏆 Floating Achievement Cards - Adjusted positions */}
+      {/* Floating Achievement Cards - Responsive positioning */}
       <motion.div
-        className="absolute top-4 md:top-8 left-4 md:left-10 bg-white/10 backdrop-blur-md rounded-xl p-3 md:p-4 border border-white/20"
+        className="absolute top-2 sm:top-4 md:top-8 left-2 sm:left-4 md:left-10 bg-white/10 backdrop-blur-md rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4 border border-white/20"
         initial={{ opacity: 0, x: -100 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1.5, duration: 1 }}
-        whileHover={{ scale: 1.05, y: -5 }}
+        whileHover={{ scale: windowSize.width >= 768 ? 1.05 : 1.02, y: -5 }}
       >
-        <div className="flex items-center top-40 gap-2 md:gap-3">
-          <FaAward className="text-yellow-400 text-xl md:text-2xl" />
+        <div className="flex items-center gap-1 sm:gap-2 md:gap-3">
+          <FaAward className="text-yellow-400 text-sm sm:text-xl md:text-2xl" />
           <div>
-            <p className="text-xs md:text-sm font-semibold">Future Starts </p>
+            <p className="text-xs sm:text-xs md:text-sm font-semibold">Future Starts</p>
             <p className="text-xs text-gray-300">Here</p>
           </div>
         </div>
       </motion.div>
 
       <motion.div
-        className="absolute top-16 md:top-20 right-4 md:right-10 bg-white/10 backdrop-blur-md rounded-xl p-3 md:p-4 border border-white/20"
+        className="absolute top-12 sm:top-16 md:top-20 right-2 sm:right-4 md:right-10 bg-white/10 backdrop-blur-md rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4 border border-white/20"
         initial={{ opacity: 0, x: 100 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 2, duration: 1 }}
-        whileHover={{ scale: 1.05, y: -5 }}
+        whileHover={{ scale: windowSize.width >= 768 ? 1.05 : 1.02, y: -5 }}
       >
-        <div className="flex items-center gap-2 md:gap-3">
-          <FaUsers className="text-green-400 text-xl md:text-2xl" />
+        <div className="flex items-center gap-1 sm:gap-2 md:gap-3">
+          <FaUsers className="text-green-400 text-sm sm:text-xl md:text-2xl" />
           <div>
-            <p className="text-xs md:text-sm font-semibold">200+</p>
+            <p className="text-xs sm:text-xs md:text-sm font-semibold">200+</p>
             <p className="text-xs text-gray-300">Students</p>
           </div>
         </div>
       </motion.div>
 
       <motion.div
-        className="absolute bottom-16 md:bottom-24 left-4 md:left-16 bg-white/10 backdrop-blur-md rounded-xl p-3 md:p-4 border border-white/20"
+        className="absolute bottom-12 sm:bottom-16 md:bottom-24 left-2 sm:left-4 md:left-16 bg-white/10 backdrop-blur-md rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4 border border-white/20"
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2.5, duration: 1 }}
-        whileHover={{ scale: 1.05, y: -5 }}
+        whileHover={{ scale: windowSize.width >= 768 ? 1.05 : 1.02, y: -5 }}
       >
-        <div className="flex items-center gap-2 md:gap-3">
-          <FaStar className="text-blue-400 text-xl md:text-2xl" />
+        <div className="flex items-center gap-1 sm:gap-2 md:gap-3">
+          <FaStar className="text-blue-400 text-sm sm:text-xl md:text-2xl" />
           <div>
-            <p className="text-xs md:text-sm font-semibold">99%</p>
+            <p className="text-xs sm:text-xs md:text-sm font-semibold">99%</p>
             <p className="text-xs text-gray-300">Success Rate</p>
           </div>
         </div>
       </motion.div>
 
-      {/* ✨ Main Hero Content */}
+      {/* Main Hero Content */}
       <motion.div
-        className="relative z-10 text-center px-4 sm:px-8 md:px-12 max-w-5xl"
+        className="relative z-10 text-center px-3 sm:px-4 md:px-8 lg:px-12 max-w-6xl mx-auto"
         style={{ opacity }}
       >
         {/* Animated Subtitle */}
@@ -214,10 +226,10 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.8 }}
-          className="mb-4 md:mb-6"
+          className="mb-3 sm:mb-4 md:mb-6"
         >
           <motion.p 
-            className="uppercase tracking-widest text-xs sm:text-sm md:text-base mb-3 md:mb-4 font-semibold"
+            className="uppercase tracking-wider sm:tracking-widest text-xs sm:text-sm md:text-base mb-2 sm:mb-3 md:mb-4 font-semibold"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
@@ -227,9 +239,9 @@ export default function Hero() {
             </span>
           </motion.p>
 
-          {/* Main Title with Typewriter Effect */}
+          {/* Main Title - Responsive font sizes */}
           <motion.h1 
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-4 md:mb-6"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-tight mb-3 sm:mb-4 md:mb-6"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1 }}
@@ -252,9 +264,9 @@ export default function Hero() {
             </motion.span>
           </motion.h1>
 
-          {/* Description */}
+          {/* Description - Responsive text */}
           <motion.p 
-            className="text-gray-200 text-sm sm:text-base md:text-lg lg:text-xl mb-6 md:mb-8 leading-relaxed max-w-3xl mx-auto"
+            className="text-gray-200 text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-6 md:mb-8 leading-relaxed max-w-4xl mx-auto px-2"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.8 }}
@@ -263,21 +275,21 @@ export default function Hero() {
           </motion.p>
         </motion.div>
 
-        {/* 🔘 Enhanced Action Buttons */}
+        {/* Action Buttons - Responsive layout */}
         <motion.div 
-          className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center items-center mb-8 md:mb-12"
+          className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center items-center mb-6 sm:mb-8 md:mb-12"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2, duration: 0.8 }}
         >
           <motion.button 
-            className="group relative bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-6 md:px-8 py-3 md:py-4 rounded-full text-base md:text-lg font-semibold transition-all duration-300 overflow-hidden w-full sm:w-auto"
-            whileHover={{ scale: 1.05, y: -2 }}
+            className="group relative bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 rounded-full text-sm sm:text-base md:text-lg font-semibold transition-all duration-300 overflow-hidden w-full sm:w-auto max-w-xs"
+            whileHover={{ scale: windowSize.width >= 768 ? 1.05 : 1.02, y: -2 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => scrollToNext()}
           >
             <span className="relative z-10 flex items-center justify-center gap-2">
-              <FaGraduationCap />
+              <FaGraduationCap className="text-sm sm:text-base" />
               Explore Programs
             </span>
             <motion.div
@@ -289,20 +301,20 @@ export default function Hero() {
           </motion.button>
 
           <motion.button 
-            className="group relative bg-transparent border-2 border-white px-6 md:px-8 py-3 md:py-4 rounded-full text-base md:text-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-300 overflow-hidden w-full sm:w-auto"
-            whileHover={{ scale: 1.05, y: -2 }}
+                       className="group relative bg-transparent border-2 border-white px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 rounded-full text-sm sm:text-base md:text-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-300 overflow-hidden w-full sm:w-auto max-w-xs"
+            whileHover={{ scale: windowSize.width >= 768 ? 1.05 : 1.02, y: -2 }}
             whileTap={{ scale: 0.95 }}
           >
             <span className="relative z-10 flex items-center justify-center gap-2">
-              <FaPlay />
+              <FaPlay className="text-sm sm:text-base" />
               Virtual Tour
             </span>
           </motion.button>
         </motion.div>
 
-        {/* 📊 Stats Counter */}
+        {/* Stats Counter - Responsive grid */}
         <motion.div 
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-2xl mx-auto"
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2.5, duration: 0.8 }}
@@ -318,11 +330,11 @@ export default function Hero() {
               className="text-center"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 2.8 + index * 0.1, duration: 0.5 }}
-              whileHover={{ scale: 1.1 }}
+              transition={{ delay: 2.8 + index * 0.1, duration: 0.5 }}
+              whileHover={{ scale: windowSize.width >= 768 ? 1.1 : 1.05 }}
             >
               <motion.h3 
-                className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1"
+                className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white mb-1"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 3 + index * 0.1 }}
@@ -335,9 +347,9 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* 🔽 Scroll Indicator */}
+      {/* Scroll Indicator - Responsive positioning */}
       <motion.div
-        className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer"
+        className="absolute bottom-2 sm:bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 3.5, duration: 0.8 }}
@@ -348,17 +360,17 @@ export default function Hero() {
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          <span className="text-xs md:text-sm font-medium">Scroll to explore</span>
-          <HiArrowDown className="text-xl md:text-2xl" />
+          <span className="text-xs md:text-sm font-medium hidden sm:block">Scroll to explore</span>
+          <HiArrowDown className="text-lg sm:text-xl md:text-2xl" />
         </motion.div>
       </motion.div>
 
-      {/* 🎯 Slide Indicators */}
-      <div className="absolute bottom-12 md:bottom-20 left-1/2 transform -translate-x-1/2 flex gap-2">
+      {/* Slide Indicators - Responsive positioning */}
+      <div className="absolute bottom-8 sm:bottom-12 md:bottom-20 left-1/2 transform -translate-x-1/2 flex gap-2">
         {textSlides.map((_, index) => (
           <motion.button
             key={index}
-            className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 ${
+            className={`w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 ${
               currentSlide === index ? 'bg-white' : 'bg-white/40'
             }`}
             onClick={() => setCurrentSlide(index)}
@@ -368,66 +380,72 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* 🌈 Animated Border Elements */}
+      {/* Animated Border Elements */}
       <motion.div
-        className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-green-500"
+        className="absolute top-0 left-0 w-full h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-green-500"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ delay: 1, duration: 2 }}
       />
       
       <motion.div
-        className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 via-purple-500 to-blue-500"
+        className="absolute bottom-0 left-0 w-full h-0.5 sm:h-1 bg-gradient-to-r from-green-500 via-purple-500 to-blue-500"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ delay: 1.5, duration: 2 }}
       />
 
-      {/* 🎨 Floating Geometric Shapes - Adjusted for smaller screens */}
-      <motion.div
-        className="absolute top-1/4 left-1/4 w-12 h-12 md:w-20 md:h-20 border-2 border-white/20 rounded-full hidden sm:block"
-        animate={{
-          rotate: 360,
-          scale: [1, 1.2, 1],
-        }}
-        transition={{
-          rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-          scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-        }}
-      />
+      {/* Floating Geometric Shapes - Hidden on mobile for performance */}
+      {windowSize.width >= 640 && (
+        <>
+          <motion.div
+            className="absolute top-1/4 left-1/4 w-8 h-8 sm:w-12 sm:h-12 md:w-20 md:h-20 border-2 border-white/20 rounded-full"
+            animate={{
+              rotate: 360,
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+              scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+            }}
+          />
 
-      <motion.div
-        className="absolute top-3/4 right-1/4 w-10 h-10 md:w-16 md:h-16 border-2 border-white/20 hidden sm:block"
-        animate={{
-          rotate: -360,
-          y: [0, -20, 0],
-        }}
-        transition={{
-          rotate: { duration: 15, repeat: Infinity, ease: "linear" },
-          y: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-        }}
-      />
+          <motion.div
+            className="absolute top-3/4 right-1/4 w-6 h-6 sm:w-10 sm:h-10 md:w-16 md:h-16 border-2 border-white/20"
+            animate={{
+              rotate: -360,
+              y: [0, -20, 0],
+            }}
+            transition={{
+              rotate: { duration: 15, repeat: Infinity, ease: "linear" },
+              y: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+            }}
+          />
 
-      <motion.div
-        className="absolute top-1/2 right-1/6 w-8 h-8 md:w-12 md:h-12 bg-gradient-to-br from-blue-400/30 to-purple-400/30 rounded-full hidden md:block"
-        animate={{
-          x: [0, 30, 0],
-          y: [0, -30, 0],
-          scale: [1, 1.3, 1],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
+          {windowSize.width >= 768 && (
+            <motion.div
+              className="absolute top-1/2 right-1/6 w-6 h-6 md:w-12 md:h-12 bg-gradient-to-br from-blue-400/30 to-purple-400/30 rounded-full"
+              animate={{
+                x: [0, 30, 0],
+                y: [0, -30, 0],
+                scale: [1, 1.3, 1],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+          )}
+        </>
+      )}
 
-      {/* 🌟 Twinkling Stars Effect */}
+      {/* Twinkling Stars Effect - Reduced count on mobile */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(30)].map((_, i) => (
+        {[...Array(windowSize.width < 768 ? 15 : 30)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-white rounded-full"
+            className="absolute w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -445,7 +463,7 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* 🎭 Loading Animation Overlay */}
+      {/* Loading Animation Overlay */}
       {!isVideoLoaded && (
         <motion.div
           className="absolute inset-0 bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center z-50"
@@ -461,11 +479,11 @@ export default function Hero() {
             transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="w-12 h-12 md:w-16 md:h-16 border-4 border-white/30 border-t-white rounded-full mx-auto mb-4"
+              className="w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 border-4 border-white/30 border-t-white rounded-full mx-auto mb-4"
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             />
-            <p className="text-white text-base md:text-lg font-semibold">Welcome to Birchwood Academy</p>
+            <p className="text-white text-sm sm:text-base md:text-lg font-semibold">Welcome to Birchwood Academy</p>
           </motion.div>
         </motion.div>
       )}
